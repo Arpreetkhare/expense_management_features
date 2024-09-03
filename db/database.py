@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 
-SQLALCHEMY_DATABASE_URL = "mysql+asyncmy://dev:3306@localhost:3306/expense_management_features"  # Update with your database name
+SQLALCHEMY_DATABASE_URL = "mysql+asyncmy://dev_user:1812@localhost:3306/expense_management_features"  
 
 # SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./test_db"
 

@@ -1,5 +1,5 @@
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 from typing import Optional
 from enum import Enum
@@ -23,6 +23,17 @@ class ExpenseModel(BaseModel):
     
     class Config:
         orm_mode = True
+
+# class UpdateExpanse(BaseModel):
+
+#     user_id=str
+#     expense_name: str
+#     expense_category: Optional[ExpenseCategoryEnum] = ExpenseCategoryEnum.Food
+#     expense_tag: Optional[str] = None
+#     expense_amount: float
+    
+#     class Config:
+#         orm_mode = True
 
 
 

@@ -32,7 +32,7 @@ async def read_root(db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Database error", headers={"Error": str(e)})
 
 app.include_router(expense, tags=["expense"])
-app.include_router(access_router,tags=['access_router'])
+
 app.include_router(generate_otp,tags=['generate_otp'])
 
 

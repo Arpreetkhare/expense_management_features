@@ -62,7 +62,7 @@ async def add_expense(request: ExpenseModel, db: AsyncSession = Depends(get_db),
         print(ex)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"error": f"Error in router: {ex}"}
+            detail={"error": f"Error in router"}
         )
 
 
@@ -91,5 +91,69 @@ async def get_expense(user_id:str,db: AsyncSession=Depends(get_db), token:str = 
         print(ex)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"error": f"expense not found"})
 
-
+@expense.put("/update_expense/{expense_id}",status_code=status.HTTP_200_OK)
+async def update_expense(expense_id:str,request:ExpenseModel,db: AsyncSession=Depends(get_db), token:str = Depends(AuthValidator())):
+    try:
         
+        current_user = __user_model(token)
+
+        user=await db.execute(select(User).filter_by(user_id=current_user))
+        user=user.scalars().first()
+
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "User not found"})
+
+        expense=await db.execute(select(Expense).filter_by(expense_id=expense_id))
+        if not expense :
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "no expense with this expense_id"})
+        
+        update_expense=Expense(
+            user_id=request.user_id,
+            expense_id=str(uuid.uuid4()),
+            expense_name=request.expense_name,
+            expense_category=request.expense_category,
+            expense_amount=request.expense_amount,
+            expense_tag=request.expense_tag,
+            created_at=int(datetime.now().timestamp()),
+            updated_at=int(datetime.now().timestamp())
+        )
+
+        db.add(update_expense)
+        await db.commit()
+        return update_expense
+    except Exception as ex:
+        print(ex)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"error": f"Error in router"}
+        )
+
+
+
+@expense.delete("/delete_expense/{expense_id}",status_code=status.HTTP_200_OK)
+async def delete_expense(expense_id:str,db: AsyncSession=Depends(get_db), token:str = Depends(AuthValidator())):
+    try:
+        
+        current_user = __user_model(token)
+
+        user=await db.execute(select(User).filter_by(user_id=current_user))
+        user=user.scalars().first()
+
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "User not found"})
+
+        expense= await db.execute(select(Expense).filter_by(expense_id=expense_id))
+        expense= expense.scalars().first()
+        if not expense :
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "no expense with this expense_id"})
+        
+        await db.delete(expense)
+        await db.commit()
+
+        return {"detail": "Expense deleted successfully"}
+    except Exception as ex:
+        print(ex)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"error": f"Error deleting expense: {ex}"})
+
+'''
+  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzI3NjA5NjE3fQ.ixTBddJOB1oxRqzNk6KaRbjsudxFZZ5KiWe88mYbFWE'''

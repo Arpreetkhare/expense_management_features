@@ -27,14 +27,20 @@ class User(DBBase):
 
 
 
-category_enum = Literal['Food', 'Transport', 'Shopping', 'Entertainment' ]
+# category_enum = Literal['Food', 'Transport', 'Shopping', 'Entertainment' ]
+class ExpenseCategoryEnum(str, enum.Enum):
+    Food = "Food"
+    Transport = "Transport"
+    Shopping = "Shopping"
+    Entertainment = "Entertainment"
+
 
 class Expense(DBBase):
     __tablename__ = 'expense'
     expense_id: Mapped[str] = mapped_column(String(500), primary_key=True)
     user_id: Mapped[str] = mapped_column(String(500), ForeignKey('user.user_id'))
     expense_name:Mapped[str] = mapped_column(String(225), nullable=False)
-    expense_category:Mapped[category_enum] = mapped_column(Enum)
+    expense_category: Mapped[ExpenseCategoryEnum] = mapped_column(Enum(ExpenseCategoryEnum), nullable=False)
     expense_tag:Mapped[str] = mapped_column(String(225), nullable=True)
     expense_amount:Mapped[str] = mapped_column(Float, nullable=False)
     created_at:Mapped[str] = mapped_column(Integer)

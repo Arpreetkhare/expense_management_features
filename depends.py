@@ -11,7 +11,7 @@ from fastapi.exceptions import HTTPException
 
 SECRET_KEY = "b4bb9013c1c03b29b9311ec0df07f3b0d8fd13edd02"
 # ALGORITHM = "SHA256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 30000000000000000000
 
 
 # pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
