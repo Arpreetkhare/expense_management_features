@@ -5,11 +5,11 @@ from db.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 from fastapi import APIRouter,Depends,status
-from fastapi_jwt_auth import AuthJWT
+
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
-from models import User
-from depends import create_access_token,verify_token
+from .user_model import User
+from depends import create_access_token
 from schemas.auth_schema import otpVali,otpVar
 
 

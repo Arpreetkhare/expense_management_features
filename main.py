@@ -9,10 +9,10 @@ from sqlalchemy import text
 
 from db.database import get_db
 from fastapi.exceptions import HTTPException
-from api.expense_router import expense
+from api.expense.expense_router import expense
 # from api.auth_router import access_router
-from api.otp_router import generate_otp
-from api.auth_router import access_router
+from api.auth.otp_router import generate_otp
+# from api.auth.auth_router import access_router
 
 app=FastAPI()
 

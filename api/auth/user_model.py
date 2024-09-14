@@ -1,0 +1,22 @@
+import datetime
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import String, Integer,DateTime
+
+
+Base= declarative_base()
+
+
+class User(Base):
+    __tablename__ = 'user'
+    user_id: Mapped[str] = mapped_column(String(500), primary_key=True)
+    first_name:Mapped[str] = mapped_column(String, nullable=False)
+    last_name:Mapped[str] = mapped_column(String, nullable=False)
+    mobile_number:Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    email:Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    otp:Mapped[str] = mapped_column(String(60))
+    otp_expire: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
+    
+    created_at:Mapped[int] = mapped_column(Integer)
+    updated_at:Mapped[int] = mapped_column(Integer)
+

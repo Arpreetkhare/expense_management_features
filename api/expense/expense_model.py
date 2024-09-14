@@ -1,10 +1,13 @@
-from sqlalchemy.orm import relationship
-from sqlalchemy_utils.types import ChoiceType 
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Integer, ForeignKey,Float, Enum,DateTime
+import enum
+from sqlalchemy.orm import declarative_base
 
-class DBBase(DeclarativeBase):
-    pass
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, Integer, ForeignKey,Float, Enum
+
+
+Base= declarative_base()
+
+
 
 class ExpenseCategoryEnum(str, enum.Enum):
     Food = "Food"
@@ -13,7 +16,7 @@ class ExpenseCategoryEnum(str, enum.Enum):
     Entertainment = "Entertainment"
 
 
-class Expense(DBBase):
+class Expense(Base):
     __tablename__ = 'expense'
     expense_id: Mapped[str] = mapped_column(String(500), primary_key=True)
     user_id: Mapped[str] = mapped_column(String(500), ForeignKey('user.user_id'))

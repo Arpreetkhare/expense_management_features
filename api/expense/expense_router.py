@@ -5,12 +5,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 # from sqlalchemy.orm import Session
 # from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter,Depends,status
-from fastapi_jwt_auth import AuthJWT
-from models import Expense,User
+
+from ..auth.user_model import User
+from .expense_model  import Expense
 from schemas.expense_schema import ExpenseModel
 # from api.utils import authorize_user
 from sqlalchemy import select
-from datetime import datetime
+from datetime import datetime, timedelta
 from dependencies import AuthValidator
 from depends import __user_model
 
@@ -31,7 +32,7 @@ async def get_user(user_id:str,db: AsyncSession=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Invalid token") from e
     
 
-@expense.post("/add", dependencies=[Depends(AuthValidator())], status_code=status.HTTP_201_CREATED)
+@expense.post("/add")
 async def add_expense(request: ExpenseModel, db: AsyncSession = Depends(get_db), token:str = Depends(AuthValidator())):
     try:
         # Authorize.jwt_required()
@@ -155,5 +156,44 @@ async def delete_expense(expense_id:str,db: AsyncSession=Depends(get_db), token:
         print(ex)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"error": f"Error deleting expense: {ex}"})
 
-'''
-  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzI3NjA5NjE3fQ.ixTBddJOB1oxRqzNk6KaRbjsudxFZZ5KiWe88mYbFWE'''
+
+@expense.get("/get_report/{user_id}")
+async def get_report(user_id:str,db: AsyncSession=Depends(get_db), token:str = Depends(AuthValidator())):
+
+    try:
+        
+        
+        current_user = __user_model(token)
+
+        user=await db.execute(select(User).filter_by(user_id=current_user))
+        user=user.scalars().first()
+
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "User not found"})
+
+        
+        today = datetime.today()
+        first_day_of_month = today.replace(day=1)
+        last_day_of_month = (first_day_of_month + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+
+        expenses_result = await db.execute(
+            select(Expense).filter(
+                Expense.user_id == user_id,
+                Expense.created_at >= first_day_of_month,
+                Expense.created_at <= last_day_of_month
+            )
+        )
+        expenses = expenses_result.scalars().all()
+
+
+        if not expenses:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"error": "no expense with this expense_id"})
+        
+        return expenses
+
+
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"error": f"Error deleting expense: {e}"})
+
+   
