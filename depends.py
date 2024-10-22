@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta,timezone
 
-# from passlib.context import CryptContext
-
 from typing import Optional
 import jwt
 from fastapi.exceptions import HTTPException
@@ -11,7 +9,7 @@ from fastapi.exceptions import HTTPException
 
 SECRET_KEY = "b4bb9013c1c03b29b9311ec0df07f3b0d8fd13edd02"
 # ALGORITHM = "SHA256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 3000
 
 
 # pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -22,7 +20,7 @@ def create_access_token(data:dict,expire_delta:Optional[timedelta]=None):
     if expire_delta:
         expire=datetime.utcnow() + expire_delta
 
-    expire=datetime.utcnow()+timedelta(30)
+    expire=datetime.utcnow()+timedelta(300)
     to_encode.update({"exp":expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY)
     return encoded_jwt

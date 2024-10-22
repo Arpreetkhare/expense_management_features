@@ -1,7 +1,7 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-
-from sqlalchemy.orm import sessionmaker
 from fastapi.exceptions import HTTPException
+
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
