@@ -1,10 +1,10 @@
 # Expense Management Features
 
-## Introduction
-This project is an Expense Management System designed to help users track, manage, and analyze their expenses efficiently.
-It supports features like categorizing expenses, group management, and role-based access control.
-
+## Overview
+This is a FastAPI-based application that provides a platform for managing expenses and user groups. Features include user registration,
+OTP-based authentication, group creation, expense tracking, and reporting.
 ## Features
+- **User Authentication:**  Register users with OTP-based authentication.Generate and verify OTPs.Access token for secure user operations.
 - **Expense Tracking:** Add and view expenses with categories like Food, Transport, Entertainment, and Shopping.
 - **Group Management:** Collaborate with others by creating and joining expense groups.
 - **Role-Based Access:** Users have specific roles (admin, member) with assigned permissions.
@@ -15,6 +15,32 @@ It supports features like categorizing expenses, group management, and role-base
 - **Backend:** Python, FastAPI/SQLAlchemy
 - **Database:** MySQL (async)
 - **Authentication:** JWT
+
+## **API Endpoints**
+
+### **User Authentication**
+| **Method** | **Endpoint**      | **Description**                 |
+|------------|-------------------|---------------------------------|
+| POST       | `/register`       | Register a new user             |
+| POST       | `/otp`            | Generate an OTP for the user    |
+| POST       | `/verify-otp`     | Verify OTP and get JWT          |
+
+### **Expense Management**
+| **Method** | **Endpoint**        | **Description**                |
+|------------|---------------------|--------------------------------|
+| POST       | `/add`              | Add a new expense              |
+| GET        | `/get_expense`      | Get a list of expenses         |
+| PUT        | `/update_expense/<id>` | Edit an expense               |
+| DELETE     | `/delete_expense/<id>` | Delete an expense            |
+
+### **Group Management**
+| **Method** | **Endpoint**         | **Description**                |
+|------------|----------------------|--------------------------------|
+| POST       | `/create_group`      | Create a new group             |
+| POST       | `/add_member/<group_id>` | Add a member to a group     |
+| GET        | `/get_groups`        | Get a list of user groups      |
+| GET        | `/get_groupmember/<group_id>` | Get members of a group |
+
  
 
 ## Installation
