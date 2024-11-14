@@ -25,13 +25,16 @@ It supports features like categorizing expenses, group management, and role-base
    cd your-repository
 
 2. **Set up a virtual environment:**
+     ```bash
      python3 -m venv env
      source env/bin/activate
    
 4. **Install dependencies:**
+     ```bash
      pip install -r requirements.txt
 
-5. **Run the application:**
+6. **Run the application:**
+      ```bash
       uvicorn main:app --reload
 
 ## Author 
