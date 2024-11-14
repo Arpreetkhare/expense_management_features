@@ -36,7 +36,7 @@ It supports features like categorizing expenses, group management, and role-base
 5. **Run the application:**
       ```bash
       uvicorn main:app --reload
-6.**Access the app:** 
+6. **Access the app:** 
    http://127.0.0.1:8000
 
 ## Author 
