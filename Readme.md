@@ -52,7 +52,7 @@ OTP-based authentication, group creation, expense tracking, and reporting.
 
 2. **Set up a virtual environment:**
      ```bash
-     python3 -m venv env
+     python3 -m venv .venv
      source .venv/bin/activate
    
 4. **Install dependencies:**
